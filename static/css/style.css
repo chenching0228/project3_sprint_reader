@@ -1,0 +1,161 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f5f7fb;
+  color: #1f2937;
+}
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+}
+
+.card {
+  width: 100%;
+  max-width: 480px;
+  background: white;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.presprint-card,
+.handoff-card {
+  text-align: center;
+}
+
+.eyebrow {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+
+.source {
+  color: #6b7280;
+  margin-bottom: 16px;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0;
+  justify-content: center;
+}
+
+.tag {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #e5eefc;
+  font-size: 14px;
+}
+
+.warning-box {
+  background: #fff7ed;
+  padding: 16px;
+  border-radius: 12px;
+  margin: 20px 0;
+}
+
+.primary-button,
+.secondary-button {
+  border: none;
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.primary-button {
+  background: #2563eb;
+  color: white;
+}
+
+.secondary-button {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+.reader-page {
+  display: block;
+  padding: 16px;
+}
+
+.top-bar {
+  max-width: 480px;
+  margin: 0 auto 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.reader-card {
+  margin: 0 auto;
+}
+
+.card-content ul {
+  padding-left: 20px;
+  line-height: 1.7;
+}
+
+.bottom-controls {
+  max-width: 480px;
+  margin: 16px auto 0;
+  display: flex;
+  gap: 12px;
+}
+
+.bottom-controls button {
+  flex: 1;
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 5px solid #dbeafe;
+  border-top: 5px solid #2563eb;
+  border-radius: 50%;
+  margin: 0 auto 16px;
+  animation: spin 1s linear infinite;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Story progress bar */
+.story-progress {
+  display: flex;
+  gap: 5px;
+  max-width: 480px;
+  margin: 0 auto 14px;
+  padding: 0 4px;
+}
+
+.story-progress-segment {
+  flex: 1;
+  height: 5px;
+  border-radius: 3px;
+  background-color: #c0c7d3;
+  transition: background-color 0.2s ease;
+}
+
+.story-progress-segment.filled {
+  background-color: #2563eb;
+}

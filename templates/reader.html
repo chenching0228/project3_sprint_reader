@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reader</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <main class="page reader-page">
+    <header class="top-bar">
+      <div id="progress-text">第 1 張 / 共 5 張</div>
+      <div id="domain-tag" class="tag">#載入中</div>
+      <div id="timer">07:00</div>
+    </header>
+
+    <div id="story-progress" class="story-progress"></div>
+
+    <section class="card reader-card">
+      <h1 id="card-title">載入中...</h1>
+      <div id="card-content" class="card-content"></div>
+    </section>
+
+    <nav class="bottom-controls">
+      <button id="prev-button" class="secondary-button">上一張</button>
+      <button id="next-button" class="primary-button">下一張</button>
+    </nav>
+  </main>
+
+  <script src="/static/js/reader.js"></script>
+</body>
+</html>
