@@ -122,6 +122,40 @@ def update_progress(
         remaining_time=session.remaining_time
     )
 
+@router.post("/{sprint_id}/abandon", response_model=CompleteSessionResponse)
+def abandon_session(
+    sprint_id: str,
+    db: Session = Depends(get_db)
+):
+    session = get_sprint_session(db, sprint_id)
+
+    if not session:
+        raise HTTPException(status_code=404, detail="Sprint session not found")
+
+    # 只有仍在進行中的 session 才需要標記為 abandoned
+    if session.completion_status != "in_progress":
+        return CompleteSessionResponse(
+            sprint_id=session.sprint_id,
+            session_id=session.sprint_id,
+            completion_status=session.completion_status,
+            redirect_url=""
+        )
+
+    session = complete_sprint_session(
+        db=db,
+        session=session,
+        completion_status="abandoned",
+        remaining_time=session.remaining_time
+    )
+
+    return CompleteSessionResponse(
+        sprint_id=session.sprint_id,
+        session_id=session.sprint_id,
+        completion_status=session.completion_status,
+        redirect_url=""
+    )
+
+
 @router.patch("/{sprint_id}/complete", response_model=CompleteSessionResponse)
 def complete_session(
     sprint_id: str,

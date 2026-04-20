@@ -25,7 +25,7 @@ def seed_database():
                 "生成式AI",
                 "法遵"
             ], ensure_ascii=False),
-            warning_text="你有 7 分鐘閱讀 5 張卡片，閱讀完後將立即進入測驗。"
+            warning_text="你有 7 分鐘閱讀 5 張卡片，閱讀完畢後將立即進入一個共 3 題的測驗。"
         )
 
         flashcards = [
@@ -37,7 +37,6 @@ def seed_database():
                 domain_tag="#金融科技",
                 page_content_json=json.dumps({
                     "text": [
-                        "AI 已廣泛應用於金融市場，可帶來以下效益：",
                         "提升營運效率",
                         "降低成本",
                         "優化客戶體驗",

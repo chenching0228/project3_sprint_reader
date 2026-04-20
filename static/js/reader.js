@@ -13,8 +13,27 @@ const appState = {
   isLocked: false,
   flashcards: [],
   timerInterval: null,
-  progressSyncInterval: null
+  progressSyncInterval: null,
+  ws: null
 };
+
+// 建立 WebSocket 連線：伺服器偵測到斷線會立即將 session 標為 abandoned
+function connectSessionWebSocket() {
+  if (!sprintId) return;
+  const ws = new WebSocket(`ws://${location.host}/ws/sessions/${sprintId}`);
+  ws.onopen = () => console.log("[WS] Connected:", sprintId);
+  ws.onerror = (e) => console.error("[WS] Error:", e);
+  ws.onclose = () => console.log("[WS] Closed:", sprintId);
+  appState.ws = ws;
+}
+
+// 正常完成時關閉 WebSocket，並標記 isLocked 讓伺服器不會誤判為 abandoned
+function closeSessionWebSocket() {
+  if (appState.ws) {
+    appState.ws.close();
+    appState.ws = null;
+  }
+}
 
 let touchStartX = 0;
 let touchEndX = 0;
@@ -239,6 +258,15 @@ document.addEventListener("visibilitychange", async () => {
   }
 });
 
+// 頁面關閉 / 跳轉 / 重新整理時，若 session 尚未正常結束，立即標為 abandoned
+// sendBeacon 保證在頁面卸載時仍能送出，比 fetch 更可靠
+window.addEventListener("pagehide", () => {
+  if (appState.isLocked) return; // 已正常完成，不需標記
+  if (!appState.sessionId) return;
+  const url = `/api/sessions/${appState.sessionId}/abandon`;
+  navigator.sendBeacon(url);
+});
+
 
 async function completeSession(status) {
   if (appState.isLocked) return;
@@ -263,6 +291,7 @@ async function completeSession(status) {
 
     const data = await response.json();
 
+    closeSessionWebSocket(); // 先關 WS，讓伺服器看到正確狀態後再跳轉
     window.location.href =
       `/handoff?session_id=${data.session_id}&module_id=${moduleId}&status=${data.completion_status}`;
   } catch (error) {
@@ -298,6 +327,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("next-button").addEventListener("click", goToNextCard);
 
   await loadFlashcards();
+  connectSessionWebSocket(); // 連接 WebSocket，斷線時伺服器会立即標記 abandoned
   updateTimerDisplay();
   startTimer();
   startProgressSync();
